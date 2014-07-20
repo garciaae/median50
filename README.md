@@ -10,15 +10,19 @@ Having said that, I have decided to apply an **external software algorithm**. Th
 2. Order them and store in disk keeping a generator pointing to them O nlog(n)
 
 ###Second stage, merging
-3. Read a file from disk of size BS/2
-4. Read a second one and merge with the first
-5. Repeat the 4th step until all the data is sorted in disk O(n)
-6. Select the median from the proper file or files O(1)
+1. Read a file from disk of size BS/2
+2. Read a second one and merge with the first
+3. Repeat the 2nd step until all the data is sorted in disk O(n)
+4. Select the median from the proper file or files O(1)
+
 ##Complexity
 Is a mergesort (with external memory) so it's a O(n log n). Once the data is ordered, it takes O(1) to fetch the median.
+
 ##Instalation
+```
 git clone
 python mediana.py
+```
 
 ###References
 * [PEP8 Style Guide](http://legacy.python.org/dev/peps/pep-0008/)
