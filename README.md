@@ -20,7 +20,7 @@ Is a mergesort (with external memory) so it's a O(n log n). Once the data is ord
 
 ##Instalation
 ```
-git clone
+git clone https://github.com/garciaae/median50.git
 python mediana.py
 ```
 
