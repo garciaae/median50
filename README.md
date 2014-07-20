@@ -8,6 +8,7 @@ Having said that, I have decided to apply an **external software algorithm**. Th
 ###First stage, ordering
 1. Read chunks of data with 50 numbers.
 2. Order them and store in disk keeping a generator pointing to them O nlog(n)
+
 ###Second stage, merging
 3. Read a file from disk of size BS/2
 4. Read a second one and merge with the first
