@@ -1,4 +1,8 @@
+
+
 def quickSort(arr):
+    """Sorts an array with a lazy pivot strategy.
+    O(n log(n))"""
     less = []
     pivotList = []
     more = []

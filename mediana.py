@@ -18,6 +18,7 @@ DELETETEMPFILES = True
 
 
 def chronometer(funcion):
+    """Counts how long does it take to compute a function"""
     def funcion_a_ejecutar(*argumentos):
         # Starting time
         inicio = time.time()
@@ -33,6 +34,7 @@ def chronometer(funcion):
 
 
 def readNFromFile(order, n):
+    """Given a set of files returns the n-th value of the order-th file"""
     with open(FILEPREFIX + "{:0>3d}".format(int(order)), "r") as f:
         f.seek(int(n - 1) * 4)
         n1, = struct.unpack('i', f.read(4))
@@ -40,6 +42,7 @@ def readNFromFile(order, n):
 
 
 def pickMedianFromCollection(numElements, elementsPerFile):
+    """Returns the median of a set of numbers sorted in a file collection"""
     numberOfFiles = ceil(numElements / elementsPerFile)
     n1 = ceil(numElements / 2)
     whichFile1 = ceil(n1 / elementsPerFile) - 1
@@ -73,11 +76,13 @@ def intsfromfile(f):
 
 
 def externalMedian(filename, BS=50):
+    """Computes the median for a file with an unsortered list of numbers"""
+    """with the constraint of not processing more than 50 numbers at a time"""
     lista = []
     iters = []
     i = 0
 
-    # We read from BS to BS
+    # We read in blocks of size = BS / 2
     for number in open(filename, "r"):
         lista.append(int(number.strip()))
         i = i + 1
@@ -105,8 +110,6 @@ def externalMedian(filename, BS=50):
         f.seek(0)
         # Adjuntamos a la lista de generadores
         iters.append(intsfromfile(f))
-
-    # print i, "numbers read and", i / 25, "lists generated"
 
     a = array.array('i')
 

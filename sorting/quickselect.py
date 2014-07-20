@@ -16,7 +16,8 @@ def partition(vector, left, right, pivotIndex):
 
 
 def _select(vector, left, right, k):
-    "Returns the k-th smallest, (k >= 0), element of vector within vector[left:right+1] inclusive."
+    """Returns the k-th smallest, (k >= 0), element of vector within a 
+    vector[left:right+1] inclusive."""
     while True:
         # select pivotIndex between left and right
         pivotIndex = random.randint(left, right)
@@ -33,8 +34,8 @@ def _select(vector, left, right, k):
 
 def select(vector, k, left=None, right=None):
     """\
-    Returns the k-th smallest, (k >= 0), element of vector within vector[left:right+1].
-    left, right default to (0, len(vector) - 1) if omitted
+    Returns the k-th smallest, (k >= 0), element of vector within 
+    vector[left:right+1].left, right default to (0, len(vector) - 1) if omitted
     """
     if left is None:
         left = 0
