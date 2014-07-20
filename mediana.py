@@ -1,3 +1,7 @@
+"""This is the median 50 coding exercise. We're going to compute the
+median of a given set with the restriction of not processing more than
+50 numbers at a time."""
+
 import array
 from math import ceil, floor
 import heapq
@@ -5,11 +9,14 @@ import os
 import struct
 import sys
 import tempfile
-import time
+import unittest
 
-from statistics.medianAlgorithms import mergeMedian as mergeMedian
+#from statistics.medianAlgorithms import mergeMedian as mergeMedian
 from statistics.medianAlgorithms import selectMedian as selectMedian
-from statistics.medianAlgorithms import quickMedian as quickMedian
+#from statistics.medianAlgorithms import quickMedian as quickMedian
+from statistics.medianAlgorithms import simpleMedian as simpleMedian
+# Uncomment for running the chronographed tests
+# from timefunctions.timefunctions import chronometer as chronometer
 
 
 FILEPREFIX = "./temp/merge50_"
@@ -17,143 +24,194 @@ INPUTFILENAME = "./data/500numbers.txt"
 DELETETEMPFILES = True
 
 
-def chronometer(funcion):
-    """Counts how long does it take to compute a function"""
-    def funcion_a_ejecutar(*argumentos):
-        # Starting time
-        inicio = time.time()
-        # launch the function
-        ret = funcion(*argumentos)
-        # Finishing time
-        fin = time.time()
-        # Total time
-        tiempo_total = fin - inicio
-        return tiempo_total
-    # return the main function
-    return funcion_a_ejecutar
+def readnfromfile(order, n):
+    """Given a set of files returns the n-th value of the order-th file
+    """
+    with open(FILEPREFIX + "{:0>3d}".format(int(order)), "r") as filehandler:
+        # Put a cursor in its place before reading
+        filehandler.seek(int(n - 1) * 4)
+        elementn, = struct.unpack('i', filehandler.read(4))
+    return elementn
 
 
-def readNFromFile(order, n):
-    """Given a set of files returns the n-th value of the order-th file"""
-    with open(FILEPREFIX + "{:0>3d}".format(int(order)), "r") as f:
-        f.seek(int(n - 1) * 4)
-        n1, = struct.unpack('i', f.read(4))
-    return n1
-
-
-def pickMedianFromCollection(numElements, elementsPerFile):
-    """Returns the median of a set of numbers sorted in a file collection"""
-    numberOfFiles = ceil(numElements / elementsPerFile)
-    n1 = ceil(numElements / 2)
-    whichFile1 = ceil(n1 / elementsPerFile) - 1
-    file1Order = n1 - elementsPerFile * whichFile1
-    firstValue = readNFromFile(whichFile1, file1Order)
-    n2 = 0
-    whichFile2 = 0
-    file2Order = 0
+def pickmedianfromcollection(numelements, elementsperfile):
+    """Returns the median of a set of numbers sorted in a file
+    collection"""
+    #numberoffiles = ceil(numelements / elementsperfile)
+    oddmedian = ceil(numelements / 2)
+    whichfile1 = ceil(oddmedian / elementsperfile) - 1
+    file1order = oddmedian - elementsperfile * whichfile1
+    firstvalue = readnfromfile(whichfile1, file1order)
+    evenmedian = 0
+    whichfile2 = 0
+    file2order = 0
     # Par
-    if numElements % 2 == 0:
-        n2 = numElements / 2 + 1
-        whichFile2 = int(floor(n2 / elementsPerFile))
-        file2Order = n2 - elementsPerFile * whichFile2
+    if numelements % 2 == 0:
+        evenmedian = numelements / 2 + 1
+        whichfile2 = int(floor(evenmedian / elementsperfile))
+        file2order = evenmedian - elementsperfile * whichfile2
         # fetch in files!
-        secondValue = readNFromFile(whichFile2, file2Order)
-        medianValue = (firstValue + secondValue) / 2
+        secondvalue = readnfromfile(whichfile2, file2order)
+        medianvalue = (firstvalue + secondvalue) / 2
     else:
-        medianValue = firstValue
+        medianvalue = firstvalue
 
-    return medianValue
+    return medianvalue
 
 
-def intsfromfile(f):
+def intsfromfile(filehandler):
+    """Generator for reading from file"""
     while True:
         a = array.array('i')
-        a.fromstring(f.read(4))
+        a.fromstring(filehandler.read(4))
         if not a:
             break
         for x in a:
             yield x
 
 
-def externalMedian(filename, BS=50):
-    """Computes the median for a file with an unsortered list of numbers"""
-    """with the constraint of not processing more than 50 numbers at a time"""
+def externalmedian(filename, blocksize=50):
+    """Computes the median for a file with an unsortered list of numbers
+    with the constraint of not processing more than 50 numbers at a time
+    """
     lista = []
     iters = []
     i = 0
 
-    # We read in blocks of size = BS / 2
+    # We read in blocks of size = blocksize / 2 for compliance with the
+    # constraints
     for number in open(filename, "r"):
         lista.append(int(number.strip()))
         i = i + 1
-        if i % (BS / 2) == 0:
+        if i % (blocksize / 2) == 0:
             a = array.array('i')
             a.fromlist(lista)
-            # Creamos un archivo temporal
-            f = tempfile.TemporaryFile()
-            # Adjuntamos el array ordenado
-            array.array('i', sorted(a)).tofile(f)
-            # Rebobinamos
-            f.seek(0)
-            # Adjuntamos a la lista de generadores
-            iters.append(intsfromfile(f))
-            # limpiamos la lista
+            filehandler = tempfile.TemporaryFile()
+            array.array('i', sorted(a)).tofile(filehandler)
+            filehandler.seek(0)
+            # Create a generators list
+            iters.append(intsfromfile(filehandler))
             lista = []
+    # Check if we have not processed data
     if len(lista) > 0:
         a = array.array('i')
         a.fromlist(lista)
-        # Creamos un archivo temporal
-        f = tempfile.TemporaryFile()
-        # Adjuntamos el array ordenado
-        array.array('i', sorted(a)).tofile(f)
-        # Rebobinamos
-        f.seek(0)
-        # Adjuntamos a la lista de generadores
-        iters.append(intsfromfile(f))
+        filehandler = tempfile.TemporaryFile()
+        array.array('i', sorted(a)).tofile(filehandler)
+        filehandler.seek(0)
+        iters.append(intsfromfile(filehandler))
 
     a = array.array('i')
 
-    # Merge BS/2 sized lists
+    # Merge blocksize/2 sized lists for compliance with the constraints
     i = 0
-    numberOfFiles = 0
+    numberoffiles = 0
     for element in heapq.merge(*iters):
         a.append(element)
         i = i + 1
-        if len(a) % BS == 0:
-            with open(FILEPREFIX + "{:0>3d}".format(numberOfFiles), "w") as f2:
-                a.tofile(f2)
+        # In compliance of the question constraints
+        if len(a) % blocksize == 0:
+            with open(FILEPREFIX + "{:0>3d}".format(numberoffiles), "w") as \
+                filehandler2:
+                a.tofile(filehandler2)
             del a[:]
-            numberOfFiles = numberOfFiles + 1
+            numberoffiles = numberoffiles + 1
     if a:
-        with open(FILEPREFIX + "{:0>3d}".format(numberOfFiles), "w") as f2:
-            a.tofile(f2)
-        # print "Last file named", FILEPREFIX +
-        # "{:0>3d}".format(numberOfFiles), "has a length of", len(a)
+        with open(FILEPREFIX + "{:0>3d}".format(numberoffiles), "w") as \
+            filehandler2:
+            a.tofile(filehandler2)
 
-    # print numberOfFiles, "files of", BS, "elements each has been generated"
-    # print i, "elements read"
-
-    numberOfElements = numberOfFiles * BS + len(a)
+    numberofelements = numberoffiles * blocksize + len(a)
 
     # Find the median into the merged files
-    median = pickMedianFromCollection(numberOfElements, BS)
+    median = pickmedianfromcollection(numberofelements, blocksize)
+
+    # If chosen, delete temporary files
     if DELETETEMPFILES:
         [os.remove(FILEPREFIX + "{:0>3d}".format(i))
-         for i in range(numberOfFiles)]
+         for i in range(numberoffiles)]
 
     return median
 
 
-if __name__ == '__main__':
-    data = [int(line.strip()) for line in open(INPUTFILENAME, "r")]
-    print "Computing time for a set of", len(data), "elements"
-    salida1 = chronometer(selectMedian)(data)
-    salida2 = chronometer(quickMedian)(data)
-    salida3 = chronometer(mergeMedian)(data)
-    salida4 = chronometer(externalMedian)(INPUTFILENAME, 50)
+def getdatafromfile(filename):
+    """Gets all the numbers from file. Used for testing."""
+    exitvalue = []
+    for line in open(filename, "r"):
+        try:
+            exitvalue.append(int(line.strip()))
+        except ValueError:
+            print "Not a number!"
+            continue
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            raise
+    return exitvalue
 
-    # salida3 = cronometro(mergeMedian)(data)
-    print "Selection median: ", salida1
-    print "Quicksort median: ", salida2
-    print "Mergesort median: ", salida3
-    print "External sort median: ", salida4
+
+class MedianCase(unittest.TestCase):
+
+    """Test cases for Median"""
+
+    def test_starting_out(self):
+        """Simple test!"""
+        self.assertEqual(1, 1)
+
+    def test_list_contains_numbers(self):
+        """Checks if the list contains only numbers"""
+        errorinlist = False
+        for value in getdatafromfile(INPUTFILENAME):
+            try:
+                int(value)
+            except ValueError:
+                errorinlist = True
+                continue
+        self.assertEqual(errorinlist, False)
+
+    def test_list_size(self):
+        """Checks if the list has a length of 500 elements"""
+        self.assertEqual(len(getdatafromfile(INPUTFILENAME)), 500)
+
+    def test_simple_median(self):
+        """Test the simple median"""
+        self.assertEqual(simpleMedian([1, 2, 3, 4, 5]), 3)
+
+    def test_select_median(self):
+        """Based on previous, test the select median"""
+        a = [5, 1, 2, 4, 3]
+        self.assertEqual(simpleMedian(sorted(a)), selectMedian(a))
+
+    def test_select_median_for_data(self):
+        """Based on previous, test the select median with data from file
+        """
+        l = getdatafromfile(INPUTFILENAME)
+        a = selectMedian(l)
+        b = simpleMedian(sorted(l))
+        self.assertEqual(a, b)
+
+    def test_external_median(self):
+        """Based on previous, test the external median with data from
+        file"""
+        l = getdatafromfile(INPUTFILENAME)
+        a = selectMedian(l)
+        b = externalmedian(INPUTFILENAME, 50)
+        self.assertEqual(a, b)
+
+
+def main():
+    """main method for testing purposes"""
+    unittest.main()
+
+if __name__ == '__main__':
+    main()
+    #data = getdatafromfile(INPUTFILENAME)
+    # print "Computing time for a set of", len(data), "elements"
+    #output1 = chronometer(selectMedian)(data)
+    #output2 = chronometer(quickMedian)(data)
+    #output3 = chronometer(mergeMedian)(data)
+    #output4 = chronometer(externalmedian)(INPUTFILENAME, 50)
+
+    # print "Selection median: ", output1
+    # print "Quicksort median: ", output2
+    # print "Mergesort median: ", output3
+    # print "External sort median: ", output4
