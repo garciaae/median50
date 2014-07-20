@@ -20,7 +20,7 @@ git clone
 python mediana.py
 
 ###References
-[PEP8 Style Guide](http://legacy.python.org/dev/peps/pep-0008/)
-[External sorting algorithms](http://en.wikipedia.org/wiki/External_sorting)
-[Pylint](http://www.pylint.org)
-[Unit tests](http://docs.python-guide.org/en/latest/writing/tests/)
+* [PEP8 Style Guide](http://legacy.python.org/dev/peps/pep-0008/)
+* [External sorting algorithms](http://en.wikipedia.org/wiki/External_sorting)
+* [Pylint](http://www.pylint.org)
+* [Unit tests](http://docs.python-guide.org/en/latest/writing/tests/)
