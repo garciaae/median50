@@ -1,5 +1,5 @@
 from sorting.quickselect import select as select
-from sorting.quicksort import quickSort as quick_sort
+from sorting.quicksort import quick_sort as quick_sort
 from sorting.mergeSort import mergesort
 
 

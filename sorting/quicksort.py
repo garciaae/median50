@@ -1,12 +1,12 @@
 
 
-def quickSort(arr):
+def quick_sort(arr):
     """
     Sorts an array with a lazy pivot strategy.
     O(n log(n))
     """
     less = []
-    pivotList = []
+    pivot_list = []
     more = []
     if len(arr) <= 1:
         return arr
@@ -18,7 +18,7 @@ def quickSort(arr):
             elif i > pivot:
                 more.append(i)
             else:
-                pivotList.append(i)
-        less = quickSort(less)
-        more = quickSort(more)
-        return less + pivotList + more
+                pivot_list.append(i)
+        less = quick_sort(less)
+        more = quick_sort(more)
+        return less + pivot_list + more
