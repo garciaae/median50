@@ -11,8 +11,8 @@ import sys
 import tempfile
 import unittest
 
-from statistics.medianAlgorithms import selectMedian as selectMedian
-from statistics.medianAlgorithms import simpleMedian as simpleMedian
+from statistics.medianAlgorithms import select_median as select_median
+from statistics.medianAlgorithms import simple_median as simple_median
 
 FILEPREFIX = "./temp/merge50_"
 INPUTFILENAME = "./data/500numbers.txt"
@@ -175,26 +175,26 @@ class MedianCase(unittest.TestCase):
 
     def test_simple_median(self):
         """Test the simple median"""
-        self.assertEqual(simpleMedian([1, 2, 3, 4, 5]), 3)
+        self.assertEqual(simple_median([1, 2, 3, 4, 5]), 3)
 
     def test_select_median(self):
         """Based on previous, test the select median"""
         a = [5, 1, 2, 4, 3]
-        self.assertEqual(simpleMedian(sorted(a)), selectMedian(a))
+        self.assertEqual(simple_median(sorted(a)), select_median(a))
 
     def test_select_median_for_data(self):
         """Based on previous, test the select median with data from file
         """
         l = getdatafromfile(INPUTFILENAME)
-        a = selectMedian(l)
-        b = simpleMedian(sorted(l))
+        a = select_median(l)
+        b = simple_median(sorted(l))
         self.assertEqual(a, b)
 
     def test_external_median(self):
         """Based on previous, test the external median with data from
         file"""
         l = getdatafromfile(INPUTFILENAME)
-        a = selectMedian(l)
+        a = select_median(l)
         b = externalmedian(INPUTFILENAME, 50)
         self.assertEqual(a, b)
 

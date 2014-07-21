@@ -1,45 +1,45 @@
 from sorting.quickselect import select as select
-from sorting.quicksort import quickSort as quickSort
+from sorting.quicksort import quickSort as quick_sort
 from sorting.mergeSort import mergesort
 
 
-def selectMedian(l):
+def select_median(l):
     """Returns the median without ordering the input list"""
     if len(l) % 2 == 0:
         n = len(l)
-        salida = (select(l, n / 2 - 1) + select(l, n / 2)) / 2
+        output = (select(l, n / 2 - 1) + select(l, n / 2)) / 2
     else:
-        salida = select(l, len(l) / 2)
-    return salida
+        output = select(l, len(l) / 2)
+    return output
 
 
-def simpleMedian(l):
+def simple_median(l):
     """Returns the median in an ordered input list"""
     if len(l) % 2 == 0:
         n = len(l)
-        salida = (l[n / 2 - 1] + l[n / 2]) / 2
+        output = (l[n / 2 - 1] + l[n / 2]) / 2
     else:
-        salida = l[len(l) / 2]
-    return salida
+        output = l[len(l) / 2]
+    return output
 
 
-def mergeMedian(l):
+def merge_median(l):
     """Sorts an input list and then return the median"""
     l = mergesort(l)
     if len(l) % 2 == 0:
         n = len(l)
-        salida = (l[n / 2 - 1] + l[n / 2]) / 2
+        output = (l[n / 2 - 1] + l[n / 2]) / 2
     else:
-        salida = l[len(l) / 2]
-    return salida
+        output = l[len(l) / 2]
+    return output
 
 
-def quickMedian(l):
+def quick_median(l):
     """Sorts an input list and then return the median"""
-    l = quickSort(l)
+    l = quick_sort(l)
     if len(l) % 2 == 0:
         n = len(l)
-        salida = (l[n / 2 - 1] + l[n / 2]) / 2
+        output = (l[n / 2 - 1] + l[n / 2]) / 2
     else:
-        salida = l[len(l) / 2]
-    return salida
+        output = l[len(l) / 2]
+    return output
