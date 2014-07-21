@@ -3,7 +3,7 @@ This is **median50** a *Python* coding exercise
 ##Problem:
 Given a list of numbers say 500 in a file, find the median of the list. The constraint is none of your functions can process more than 50 numbers at a time.
 ##Analysing the solution
-We know nothing about data. The only restriction is to proccess elements in groups of no more than 50 because the main goal is to simulate the case when the list is very big and we want to treat each function as a machine.
+We know nothing about data. The only restriction is to process elements in groups of no more than 50 because the main goal is to simulate the case when the list is very big and we want to treat each function as a machine.
 Having said that, I have decided to apply an **external software algorithm**. This kind of algorithms use external memory units as intermediate memory. 
 ###First stage, ordering
 1. Read chunks of data with 50 numbers.
