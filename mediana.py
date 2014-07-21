@@ -1,6 +1,8 @@
-"""This is the median 50 coding exercise. We're going to compute the
+"""
+This is the median 50 coding exercise. We're going to compute the
 median of a given set with the restriction of not processing more than
-50 numbers at a time."""
+50 numbers at a time.
+"""
 
 import array
 from math import ceil, floor
@@ -11,8 +13,8 @@ import sys
 import tempfile
 import unittest
 
-from statistics.medianAlgorithms import select_median as select_median
-from statistics.medianAlgorithms import simple_median as simple_median
+from statistics.median_algorithms import select_median as select_median
+from statistics.median_algorithms import simple_median as simple_median
 
 FILEPREFIX = "./temp/merge50_"
 INPUTFILENAME = "./data/500numbers.txt"
