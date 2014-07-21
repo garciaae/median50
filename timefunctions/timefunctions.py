@@ -5,11 +5,11 @@ import time
 
 def chronometer(funcion):
     """Counts how long does it take to compute a function"""
-    def function_to_run(*argumentos):
+    def function_to_run(*args):
         """Inner function"""
-        inicio = time.time()
-        funcion(*argumentos)
-        fin = time.time()
-        tiempo_total = fin - inicio
-        return tiempo_total
+        start_time = time.time()
+        funcion(*args)
+        end_time = time.time()
+        time_elapsed = end_time - start_time
+        return time_elapsed
     return function_to_run
