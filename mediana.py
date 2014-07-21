@@ -11,13 +11,8 @@ import sys
 import tempfile
 import unittest
 
-#from statistics.medianAlgorithms import mergeMedian as mergeMedian
 from statistics.medianAlgorithms import selectMedian as selectMedian
-#from statistics.medianAlgorithms import quickMedian as quickMedian
 from statistics.medianAlgorithms import simpleMedian as simpleMedian
-# Uncomment for running the chronographed tests
-# from timefunctions.timefunctions import chronometer as chronometer
-
 
 FILEPREFIX = "./temp/merge50_"
 INPUTFILENAME = "./data/500numbers.txt"
@@ -25,7 +20,8 @@ DELETETEMPFILES = True
 
 
 def readnfromfile(order, n):
-    """Given a set of files returns the n-th value of the order-th file
+    """
+    Given a set of files returns the n-th value of the order-th file
     """
     with open(FILEPREFIX + "{:0>3d}".format(int(order)), "r") as filehandler:
         # Put a cursor in its place before reading
@@ -35,8 +31,10 @@ def readnfromfile(order, n):
 
 
 def pickmedianfromcollection(numelements, elementsperfile):
-    """Returns the median of a set of numbers sorted in a file
-    collection"""
+    """
+    Returns the median of a set of numbers sorted in a file
+    collection
+    """
     #numberoffiles = ceil(numelements / elementsperfile)
     oddmedian = ceil(numelements / 2)
     whichfile1 = ceil(oddmedian / elementsperfile) - 1
@@ -60,7 +58,9 @@ def pickmedianfromcollection(numelements, elementsperfile):
 
 
 def intsfromfile(filehandler):
-    """Generator for reading from file"""
+    """
+    Generator for reading from file
+    """
     while True:
         a = array.array('i')
         a.fromstring(filehandler.read(4))
@@ -71,7 +71,8 @@ def intsfromfile(filehandler):
 
 
 def externalmedian(filename, blocksize=50):
-    """Computes the median for a file with an unsortered list of numbers
+    """
+    Computes the median for a file with an unsortered list of numbers
     with the constraint of not processing more than 50 numbers at a time
     """
     lista = []
@@ -204,14 +205,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    #data = getdatafromfile(INPUTFILENAME)
-    # print "Computing time for a set of", len(data), "elements"
-    #output1 = chronometer(selectMedian)(data)
-    #output2 = chronometer(quickMedian)(data)
-    #output3 = chronometer(mergeMedian)(data)
-    #output4 = chronometer(externalmedian)(INPUTFILENAME, 50)
-
-    # print "Selection median: ", output1
-    # print "Quicksort median: ", output2
-    # print "Mergesort median: ", output3
-    # print "External sort median: ", output4
