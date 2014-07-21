@@ -18,6 +18,7 @@ from statistics.median_algorithms import simple_median as simple_median
 
 FILEPREFIX = "./temp/merge50_"
 INPUTFILENAME = "./data/500numbers.txt"
+# Put a False value for debugging
 DELETETEMPFILES = True
 
 

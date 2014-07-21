@@ -1,8 +1,10 @@
 
 
 def mergesort(data):
-    """Mergesort algorithm"""
-    """O(n log (n))"""
+    """
+    Mergesort algorithm
+    O(n log (n))
+    """
     if len(data) < 2:
         return data
     middle = len(data) / 2
@@ -12,8 +14,10 @@ def mergesort(data):
 
 
 def merge(left, right):
-    """Merge two sorted lists"""
-    """O(n)"""
+    """
+    Merge two sorted lists
+    O(n)
+    """
     result = []
     i, j = 0, 0
     while i < len(left) and j < len(right):

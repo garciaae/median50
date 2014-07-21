@@ -1,35 +1,37 @@
 import random
 
 
-def partition(vector, left, right, pivotIndex):
-    pivotValue = vector[pivotIndex]
-    vector[pivotIndex], vector[right] = vector[
-        right], vector[pivotIndex]  # Move pivot to end
-    storeIndex = left
+def partition(vector, left, right, pivot_index):
+    pivot_value = vector[pivot_index]
+    vector[pivot_index], vector[right] = vector[
+        right], vector[pivot_index]  # Move pivot to end
+    store_index = left
     for i in range(left, right):
-        if vector[i] < pivotValue:
-            vector[storeIndex], vector[i] = vector[i], vector[storeIndex]
-            storeIndex += 1
+        if vector[i] < pivot_value:
+            vector[store_index], vector[i] = vector[i], vector[store_index]
+            store_index += 1
     # Move pivot to its final place
-    vector[right], vector[storeIndex] = vector[storeIndex], vector[right]
-    return storeIndex
+    vector[right], vector[store_index] = vector[store_index], vector[right]
+    return store_index
 
 
 def _select(vector, left, right, k):
-    """Returns the k-th smallest, (k >= 0), element of vector within a 
-    vector[left:right+1] inclusive."""
+    """
+    Returns the k-th smallest, (k >= 0), element of vector within a 
+    vector[left:right+1] inclusive.
+    """
     while True:
-        # select pivotIndex between left and right
-        pivotIndex = random.randint(left, right)
-        pivotNewIndex = partition(vector, left, right, pivotIndex)
-        pivotDist = pivotNewIndex - left
+        # select pivot_index between left and right
+        pivot_index = random.randint(left, right)
+        pivot_new_index = partition(vector, left, right, pivot_index)
+        pivotDist = pivot_new_index - left
         if pivotDist == k:
-            return vector[pivotNewIndex]
+            return vector[pivot_new_index]
         elif k < pivotDist:
-            right = pivotNewIndex - 1
+            right = pivot_new_index - 1
         else:
             k -= pivotDist + 1
-            left = pivotNewIndex + 1
+            left = pivot_new_index + 1
 
 
 def select(vector, k, left=None, right=None):
@@ -42,7 +44,4 @@ def select(vector, k, left=None, right=None):
     lv1 = len(vector) - 1
     if right is None:
         right = lv1
-    #assert vector and k >= 0, "Either null vector or k < 0 "
-    #assert 0 <= left <= lv1, "left is out of range"
-    #assert left <= right <= lv1, "right is out of range"
     return _select(vector, left, right, k)
