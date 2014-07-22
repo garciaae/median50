@@ -2,9 +2,9 @@
 This is **median50** a *Python* coding exercise
 ##Problem:
 Given a list of numbers say 500 in a file, find the median of the list. The constraint is none of your functions can process more than 50 numbers at a time.
-##Analysing the solution
+##Analyzing the solution
 We know nothing about data. The only restriction is to process elements in groups of no more than 50 because the main goal is to simulate the case when the list is very big and we want to treat each function as a machine.
-Having said that, I have decided to apply an **external software algorithm**. This kind of algorithms use external memory units as intermediate memory. 
+Having said that, I have decided to apply an **external software algorithm**. This kind of algorithms uses external memory units as intermediate memory. 
 ###First stage, ordering
 1. Read chunks of data with 50 numbers.
 2. Order them and store in disk keeping a generator pointing to them O nlog(n)
@@ -16,7 +16,7 @@ Having said that, I have decided to apply an **external software algorithm**. Th
 4. Select the median from the proper file or files O(1)
 
 ##Complexity
-Is a mergesort (with external memory) so it's a O(n log n). Once the data is ordered, it takes O(1) to fetch the median.
+Is a mergesort (with external memory) so it's a O(n log n).It also takes O(n) to merge the partial lists. Once the data is ordered, it takes O(1) to fetch the median.
 
 ##Instalation
 ```
